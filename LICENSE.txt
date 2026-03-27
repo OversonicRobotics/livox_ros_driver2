@@ -24,9 +24,6 @@ livox_ros_driver2
 │   ├── rviz_HAP_launch.py
 │   ├── rviz_MID360_launch.py
 │   └── rviz_mixed.py
-├── msg
-│   ├── CustomMsg.msg
-│   └── CustomPoint.msg
 ├── package_ROS1.xml
 ├── package_ROS2.xml
 ├── package.xml

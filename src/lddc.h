@@ -60,8 +60,8 @@ template <typename MessageT> using Publisher = rclcpp::Publisher<MessageT>;
 using PublisherPtr = std::shared_ptr<rclcpp::PublisherBase>;
 using PointCloud2 = sensor_msgs::msg::PointCloud2;
 using PointField = sensor_msgs::msg::PointField;
-using CustomMsg = livox_ros_driver2::msg::CustomMsg;
-using CustomPoint = livox_ros_driver2::msg::CustomPoint;
+using CustomMsg = oversonic_nav2_msgs::msg::CustomMsg;
+using CustomPoint = oversonic_nav2_msgs::msg::CustomPoint;
 using ImuMsg = sensor_msgs::msg::Imu;
 #endif
 

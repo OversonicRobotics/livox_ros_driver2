@@ -37,6 +37,9 @@
     <depend>pcl_ros</depend>
     <depend>git</depend>
     <depend>apr</depend>
+    <depend>apr-util</depend>
+    <depend>oversonic_nav2_msgs</depend>
+
 
     <export>
         <build_type condition="$ROS_VERSION == 2">ament_cmake</build_type>

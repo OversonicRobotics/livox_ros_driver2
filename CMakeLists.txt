@@ -1,4 +1,4 @@
-# judge which cmake codes to use 
+# judge which cmake codes to use
 if($ENV{ROS_VERSION} STREQUAL "1")
 
   # Copyright(c) 2019 livoxtech limited.
@@ -42,13 +42,7 @@ if($ENV{ROS_VERSION} STREQUAL "1")
 
   ## Find pcl lib
   find_package(PCL REQUIRED)
-
-  ## Generate messages in the 'msg' folder
-  add_message_files(FILES
-    CustomPoint.msg
-    CustomMsg.msg
-    #   Message2.msg
-  )
+  find_package(oversonic_nav2_msgs REQUIRED)
 
   ## Generate added messages and services with any dependencies listed here
   generate_messages(DEPENDENCIES
@@ -245,15 +239,6 @@ else($ENV{ROS_VERSION} STREQUAL "2")
     message(${APR_LIBRARIES})
   endif(APR_FOUND)
 
-  # generate custom msg headers
-  set(LIVOX_INTERFACES livox_interfaces2)
-  rosidl_generate_interfaces(${LIVOX_INTERFACES}
-    "msg/CustomPoint.msg"
-    "msg/CustomMsg.msg"
-    DEPENDENCIES builtin_interfaces std_msgs
-    LIBRARY_NAME ${PROJECT_NAME}
-  )
-
   # Use prebuild livox sdk
   message(STATUS "Platform: ${CMAKE_SYSTEM_PROCESSOR}")
   if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
@@ -295,23 +280,11 @@ else($ENV{ROS_VERSION} STREQUAL "2")
 
   target_include_directories(${PROJECT_NAME} PRIVATE ${livox_sdk_INCLUDE_DIRS})
 
-  # get include directories of custom msg headers
-  if($ENV{ROS_DISTRO} STREQUAL "foxy")
-    set(LIVOX_INTERFACE_TARGET "${LIVOX_INTERFACES}__rosidl_typesupport_cpp")
-    add_dependencies(${PROJECT_NAME} ${LIVOX_INTERFACES})
-    get_target_property(LIVOX_INTERFACES_INCLUDE_DIRECTORIES ${LIVOX_INTERFACE_TARGET} INTERFACE_INCLUDE_DIRECTORIES)
-  else()
-    rosidl_get_typesupport_target(cpp_typesupport_target
-      ${LIVOX_INTERFACES} "rosidl_typesupport_cpp")
-    target_link_libraries(${PROJECT_NAME} "${cpp_typesupport_target}")
-  endif()
-
   # include file direcotry
   target_include_directories(${PROJECT_NAME} PUBLIC
     ${PCL_INCLUDE_DIRS}
     ${APR_INCLUDE_DIRS}
     ${LIVOX_LIDAR_SDK_INCLUDE_DIR}
-    ${LIVOX_INTERFACES_INCLUDE_DIRECTORIES} # for custom msgs
     3rdparty
     src
   )
@@ -319,7 +292,6 @@ else($ENV{ROS_VERSION} STREQUAL "2")
   # link libraries
   target_link_libraries(${PROJECT_NAME}
     ${LIVOX_LIDAR_SDK_LIBRARY}
-    ${LIVOX_INTERFACE_TARGET} # for custom msgs
     ${PPT_LIBRARY}
     ${Boost_LIBRARY}
     ${PCL_LIBRARIES}

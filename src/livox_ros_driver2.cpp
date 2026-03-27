@@ -34,6 +34,9 @@
 #include "lddc.h"
 #include "lds_lidar.h"
 
+#include "oversonic_nav2_msgs/msg/custom_point.hpp"
+#include "oversonic_nav2_msgs/msg/custom_msg.hpp"
+
 using namespace livox_ros;
 
 #ifdef BUILDING_ROS1

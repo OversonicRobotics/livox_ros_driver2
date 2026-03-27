@@ -31,8 +31,8 @@
 namespace livox_ros {
 
 void LivoxLidarCallback::LidarInfoChangeCallback(const uint32_t handle,
-                                           const LivoxLidarInfo* info,
-                                           void* client_data) {
+                                                 const LivoxLidarInfo* info,
+                                                 void* client_data) {
   if (client_data == nullptr) {
     std::cout << "lidar info change callback failed, client data is nullptr" << std::endl;
     return;
