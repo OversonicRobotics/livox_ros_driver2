@@ -38,7 +38,6 @@
 #include "oversonic_nav2_msgs/msg/custom_msg.hpp"
 
 using namespace livox_ros;
-using namespace oversonic_nav2_msgs::msg;
 
 #ifdef BUILDING_ROS1
 int main(int argc, char **argv) {
