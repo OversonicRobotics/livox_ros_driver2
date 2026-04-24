@@ -50,11 +50,10 @@ Lds::Lds(const double publish_freq, const uint8_t data_src)
 Lds::~Lds() {
   lidar_count_ = 0;
   ResetLds(0);
-  printf("lds destory!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+  std::cout << "lddc destroyed" << std::endl;
 }
 
 void Lds::ResetLidar(LidarDevice *lidar, uint8_t data_src) {
-  //cache_index_.ResetIndex(lidar);
   DeInitQueue(&lidar->data);
   lidar->imu_data.Clear();
 
