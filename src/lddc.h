@@ -82,11 +82,12 @@ class Lddc final {
   Lds *lds_;
 
  private:
-  void PollingLidarPointCloudData(uint8_t index, LidarDevice *lidar);
+  void PollingLidarPointCloudData(uint8_t index, LidarDevice *lidar,
+                                  std::vector<PointCloud2>& pcd2_buffer, std::vector<CustomMsg>& custom_buffer);
   void PollingLidarImuData(uint8_t index, LidarDevice *lidar);
 
-  void PublishPointcloud2(LidarDataQueue *queue, uint8_t index);
-  void PublishCustomPointcloud(LidarDataQueue *queue, uint8_t index);
+  void PublishPointcloud2(LidarDataQueue *queue, uint8_t index, std::vector<PointCloud2>& pcd2_buffer);
+  void PublishCustomPointcloud(LidarDataQueue *queue, uint8_t index, std::vector<CustomMsg>& custom_buffer);
   void PublishPclMsg(LidarDataQueue *queue, uint8_t index);
 
   void PublishImuData(LidarImuDataQueue& imu_data_queue, const uint8_t index);
@@ -109,9 +110,15 @@ class Lddc final {
   void FillPointsToCustomMsg(CustomMsg& livox_msg, LivoxPointXyzrtlt* src_point, uint32_t num,
       uint32_t offset_time, uint32_t point_interval, uint32_t echo_num);
 
+  PointCloud2 MergeMessages(const std::vector<PointCloud2>& buffer);
+  CustomMsg MergeMessages(const std::vector<CustomMsg>& buffer);
+
   PublisherPtr CreatePublisher(uint8_t msg_type, std::string &topic_name, uint32_t queue_size);
   PublisherPtr GetCurrentPublisher(uint8_t index);
   PublisherPtr GetCurrentImuPublisher(uint8_t index);
+
+  std::shared_ptr<rclcpp::Publisher<PointCloud2>> merged_pcd_pub_;
+  std::shared_ptr<rclcpp::Publisher<CustomMsg>> merged_custom_pub_;
 
  private:
   uint8_t transfer_format_;
