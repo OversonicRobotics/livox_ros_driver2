@@ -40,13 +40,15 @@
 namespace livox_ros {
 
 /** Lidar Data Distribute Control--------------------------------------------*/
-Lddc::Lddc(int format, int multi_topic, int data_src, int output_type, double frq, std::string &frame_id)
+Lddc::Lddc(int format, int multi_topic, int data_src, int output_type,
+           double frq, std::string &frame_id, bool merge_pointcloud)
     : transfer_format_(format),
       use_multi_topic_(multi_topic),
       data_src_(data_src),
       output_type_(output_type),
       publish_frq_(frq),
-      frame_id_(frame_id) {
+      frame_id_(frame_id),
+      merge_pointcloud_(merge_pointcloud){
   publish_period_ns_ = kNsPerSecond / publish_frq_;
   lds_ = nullptr;
 }
@@ -90,7 +92,7 @@ void Lddc::DistributePointCloudData(void) {
     PollingLidarPointCloudData(lidar_id, lidar, pcd2_buffer, custom_buffer);
   }
 
-  if (kPointCloud2Msg == transfer_format_ && !pcd2_buffer.empty()) {
+  if (merge_pointcloud_ && kPointCloud2Msg == transfer_format_ && !pcd2_buffer.empty()) {
     PointCloud2 merged_cloud = MergeMessages(pcd2_buffer);
     if (!merged_pcd_pub_) {
       std::string topic_name("livox/merged_cloud");
@@ -179,9 +181,9 @@ void Lddc::PublishPointcloud2(LidarDataQueue *queue, uint8_t index, std::vector<
     PointCloud2 cloud;
     uint64_t timestamp = 0;
     InitPointcloud2Msg(pkg, cloud, timestamp);
-    PublishPointcloud2Data(index, timestamp, cloud);
 
-    pcd2_buffer.push_back(cloud);
+    if (merge_pointcloud_) pcd2_buffer.push_back(cloud);
+    else PublishPointcloud2Data(index, timestamp, cloud);
   }
 }
 
@@ -197,9 +199,9 @@ void Lddc::PublishCustomPointcloud(LidarDataQueue *queue, uint8_t index, std::ve
     CustomMsg livox_msg;
     InitCustomMsg(livox_msg, pkg, index);
     FillPointsToCustomMsg(livox_msg, pkg);
-    PublishCustomPointData(livox_msg, index);
 
-    custom_buffer.push_back(livox_msg);
+    if (merge_pointcloud_) custom_buffer.push_back(livox_msg);
+    else PublishCustomPointData(livox_msg, index);
   }
 }
 
