@@ -6,15 +6,9 @@ livox_ros_driver2
 │   └── version.cmake
 ├── CMakeLists.txt
 ├── config
-│   ├── display_point_cloud_ROS1.rviz
-│   ├── display_point_cloud_ROS2.rviz
-│   ├── HAP_config.json
 │   ├── MID360_config.json
-│   └── mixed_HAP_MID360_config.json
 ├── launch
-│   ├── msg_HAP_launch.py
 │   ├── msg_MID360_launch.py
-│   ├── rviz_HAP_launch.py
 │   ├── rviz_MID360_launch.py
 │   └── rviz_mixed.py
 ├── package.xml

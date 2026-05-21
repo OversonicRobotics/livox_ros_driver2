@@ -54,4 +54,3 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Fix IMU packet loss.
 - Fix some conflicts with livox ros driver.
-- Fixed HAP Lidar publishing PointCloud2 and CustomMsg format point clouds with no line number.
