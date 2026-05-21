@@ -6,26 +6,11 @@ livox_ros_driver2
 │   └── version.cmake
 ├── CMakeLists.txt
 ├── config
-│   ├── display_point_cloud_ROS1.rviz
-│   ├── display_point_cloud_ROS2.rviz
-│   ├── HAP_config.json
 │   ├── MID360_config.json
-│   └── mixed_HAP_MID360_config.json
-├── launch_ROS1
-│   ├── msg_HAP.launch
-│   ├── msg_MID360.launch
-│   ├── msg_mixed.launch
-│   ├── rviz_HAP.launch
-│   ├── rviz_MID360.launch
-│   └── rviz_mixed.launch
-├── launch_ROS2
-│   ├── msg_HAP_launch.py
+├── launch
 │   ├── msg_MID360_launch.py
-│   ├── rviz_HAP_launch.py
 │   ├── rviz_MID360_launch.py
 │   └── rviz_mixed.py
-├── package_ROS1.xml
-├── package_ROS2.xml
 ├── package.xml
 ├── README.md
 └── src
@@ -51,9 +36,7 @@ livox_ros_driver2
     ├── driver_node.h
     ├── include
     │   ├── livox_ros_driver2.h
-    │   ├── ros1_headers.h
     │   ├── ros2_headers.h
-    │   └── ros_headers.h
     ├── lddc.cpp
     ├── lddc.h
     ├── lds.cpp

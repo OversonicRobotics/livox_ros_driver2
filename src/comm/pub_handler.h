@@ -71,7 +71,7 @@ class LidarPubHandler {
   std::mutex mutex_;
   std::atomic_bool is_set_extrinsic_params_;
 };
-  
+
 class PubHandler {
  public:
   using PointCloudsCallback = std::function<void(PointFrame*, void *)>;
@@ -104,7 +104,7 @@ class PubHandler {
   void PublishPointCloud();
   static void OnLivoxLidarPointCloudCallback(uint32_t handle, const uint8_t dev_type,
                                              LivoxLidarEthernetPacket *data, void *client_data);
-  
+
   static bool GetLidarId(LidarProtoType lidar_type, uint32_t handle, uint32_t& id);
   static uint64_t GetEthPacketTimestamp(uint8_t timestamp_type, uint8_t* time_stamp, uint8_t size);
 
