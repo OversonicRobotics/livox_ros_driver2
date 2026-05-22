@@ -370,18 +370,33 @@ void Lddc::PublishPclData(const uint8_t index, const uint64_t timestamp, const P
   return;
 }
 
-void Lddc::InitImuMsg(const ImuData& imu_data, ImuMsg& imu_msg, uint64_t& timestamp) {
+void Lddc::InitImuMsg(const ImuData& imu_data, ImuMsg& imu_msg, uint64_t& timestamp, uint8_t index) {
   imu_msg.header.frame_id = frame_id_;
 
   timestamp = imu_data.time_stamp;
   imu_msg.header.stamp = rclcpp::Time(timestamp);  // to ros time stamp
 
-  imu_msg.angular_velocity.x = imu_data.gyro_x;
-  imu_msg.angular_velocity.y = imu_data.gyro_y;
-  imu_msg.angular_velocity.z = imu_data.gyro_z;
-  imu_msg.linear_acceleration.x = 9.81 * imu_data.acc_x;
-  imu_msg.linear_acceleration.y = 9.81 * imu_data.acc_y;
-  imu_msg.linear_acceleration.z = 9.81 * imu_data.acc_z;
+  const ExtParameter& ext = lds_->lidars_[index].livox_config.extrinsic_param;
+  const double roll  = ext.roll  * M_PI / 180.0;
+  const double pitch = ext.pitch * M_PI / 180.0;
+  const double yaw   = ext.yaw   * M_PI / 180.0;
+
+  const double cr = cos(roll),  sr = sin(roll);
+  const double cp = cos(pitch), sp = sin(pitch);
+  const double cy = cos(yaw),   sy = sin(yaw);
+
+  // ZYX rotation matrix (same convention as pub_handler SetLidarsExtParam)
+  const double r00 = cp * cy,  r01 = sr * sp * cy - cr * sy,  r02 = cr * sp * cy + sr * sy;
+  const double r10 = cp * sy,  r11 = sr * sp * sy + cr * cy,  r12 = cr * sp * sy - sr * cy;
+  const double r20 = -sp,      r21 = sr * cp,                 r22 = cr * cp;
+
+  imu_msg.angular_velocity.x = r00 * imu_data.gyro_x + r01 * imu_data.gyro_y + r02 * imu_data.gyro_z;
+  imu_msg.angular_velocity.y = r10 * imu_data.gyro_x + r11 * imu_data.gyro_y + r12 * imu_data.gyro_z;
+  imu_msg.angular_velocity.z = r20 * imu_data.gyro_x + r21 * imu_data.gyro_y + r22 * imu_data.gyro_z;
+
+  imu_msg.linear_acceleration.x = 9.81 * (r00 * imu_data.acc_x + r01 * imu_data.acc_y + r02 * imu_data.acc_z);
+  imu_msg.linear_acceleration.y = 9.81 * (r10 * imu_data.acc_x + r11 * imu_data.acc_y + r12 * imu_data.acc_z);
+  imu_msg.linear_acceleration.z = 9.81 * (r20 * imu_data.acc_x + r21 * imu_data.acc_y + r22 * imu_data.acc_z);
 }
 
 void Lddc::PublishImuData(LidarImuDataQueue& imu_data_queue, const uint8_t index) {
@@ -393,7 +408,7 @@ void Lddc::PublishImuData(LidarImuDataQueue& imu_data_queue, const uint8_t index
 
   ImuMsg imu_msg;
   uint64_t timestamp;
-  InitImuMsg(imu_data, imu_msg, timestamp);
+  InitImuMsg(imu_data, imu_msg, timestamp, index);
 
   Publisher<ImuMsg>::SharedPtr publisher_ptr = std::dynamic_pointer_cast<Publisher<ImuMsg>>(GetCurrentImuPublisher(index));
 
