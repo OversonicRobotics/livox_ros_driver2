@@ -45,10 +45,16 @@ Borromeo launch remaps these to `/lidar_3d/pointcloud[_custom_msg]` and `/lidar_
 
 ## Launch Files
 
-| File | LiDAR | Format | Notes |
-|------|-------|--------|-------|
-| `msg_MID360_launch.py` | MID360 | PointCloud2 | multi_topic=1, frame `livox_f_frame` |
-| `MID360_borromeo_launch.py` | MID360 | CustomMsg (xfer=1) | Oversonic robot config, remapped topics |
+| File | Robot | Config | merge_pointcloud | frame_id |
+|------|-------|--------|-----------------|----------|
+| `N020.launch.py` | N020 | `N020.json` | false | `base_link` |
+| `R20.launch.py` | R20 | `R20.json` | true | `laser_frame_F3D` |
+| `MID360.launch.py` | MID360 single | `MID360_config.json` | false | `livox_f_frame` |
+| `MID360_S.launch.py` | MID360-S single | `MID360_S_config.json` | false | `laser_frame_F3D` |
+| `MID360_borromeo.launch.py` | Borromeo | `MID360_config_borromeo.json` | — | — |
+| `calibration.launch.py` | R20 (calib) | `calibration.json` | false | `calibration_frame` |
+
+All Oversonic launches (except `MID360.launch.py`) remap `/livox/lidar` and `/livox/merged_cloud` → `/lidar_3d/pointcloud` (or `_custom_msg` when `xfer_format=1`), and `/livox/imu` → `/lidar_3d/imu`.
 
 **Key launch params:**
 - `xfer_format`: 0=PointCloud2(XYZRTLT), 1=CustomMsg, 2=PCL PointXYZI
@@ -59,16 +65,22 @@ Borromeo launch remaps these to `/lidar_3d/pointcloud[_custom_msg]` and `/lidar_
 
 ## Config Files
 
-JSON configs in `config/` set LiDAR IP, host IP, ports, and per-device extrinsic parameters (roll/pitch/yaw in degrees, x/y/z in mm).
+JSON configs in `config/` set LiDAR IPs, host IP, ports, and per-device extrinsic parameters (roll/pitch/yaw in degrees, x/y/z in mm). All robots use host `10.1.8.150`.
 
-`MID360_config.json` — current robot: LiDAR at `10.1.8.30`, host at `10.1.8.150`, yaw=180°, x=-680mm offset.
-
-`MID360_config_borromeo.json` — Borromeo robot variant.
+| Config | LiDAR IPs | Notes |
+|--------|-----------|-------|
+| `N020.json` | `10.1.8.30`, `10.1.8.31` | Dual MID360; second has calibrated extrinsic |
+| `R20.json` | `10.1.8.40`, `10.1.8.41` | Dual MID360; second has calibrated extrinsic |
+| `calibration.json` | `10.1.8.40`, `10.1.8.41` | R20 without extrinsics — used during calibration runs |
+| `MID360_config.json` | `10.1.8.30` | Single MID360, yaw=180°, x=-680mm |
+| `MID360_S_config.json` | `10.1.8.40` | Single MID360-S; uses `Mid360s` key in JSON (different from `MID360`) |
+| `MID360_config_borromeo.json` | `10.1.8.30` | Borromeo robot variant |
 
 ## Oversonic Customizations
 
 This is a fork of upstream `Livox-SDK/livox_ros_driver2`. Local additions:
 - `merge_pointcloud` parameter and `Lddc::MergeMessages()` (merged multi-LiDAR publishing)
 - `oversonic_nav2_msgs::CustomMsg/CustomPoint` replaces upstream `livox_ros_driver2::CustomMsg` — check `lddc.h` type aliases
+- IMU data rotated by `extrinsic_parameter` rotation matrix in `Lddc::InitImuMsg()` — same ZYX convention as point cloud transform in `pub_handler.cpp`. Translation not applied (no lever-arm compensation).
 - Borromeo-specific launch and config files
 - ROS1 support removed
