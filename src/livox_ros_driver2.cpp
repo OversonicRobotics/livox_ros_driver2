@@ -62,8 +62,6 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
   this->declare_parameter("output_data_type", output_type);
   this->declare_parameter("frame_id", "frame_default");
   this->declare_parameter("user_config_path", "path_default");
-  this->declare_parameter("cmdline_input_bd_code", "000000000000001");
-  this->declare_parameter("lvx_file_path", "/home/livox/livox_test.lvx");
   this->declare_parameter("merge_pointcloud", false);
 
   this->get_parameter("xfer_format", xfer_format);
@@ -88,9 +86,6 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
     std::string user_config_path;
     this->get_parameter("user_config_path", user_config_path);
     DRIVER_INFO(*this, "Config file : %s", user_config_path.c_str());
-
-    std::string cmdline_bd_code;
-    this->get_parameter("cmdline_input_bd_code", cmdline_bd_code);
 
     LdsLidar *read_lidar = LdsLidar::GetInstance(publish_freq);
     lddc_ptr_->RegisterLds(static_cast<Lds *>(read_lidar));

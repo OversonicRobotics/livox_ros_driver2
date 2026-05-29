@@ -61,21 +61,21 @@ void LivoxLidarCallback::LidarInfoChangeCallback(const uint32_t handle,
       if (config.pcl_data_type != -1 ) {
         lidar_device->livox_config.set_bits |= kConfigDataType;
         SetLivoxLidarPclDataType(handle, static_cast<LivoxLidarPointDataType>(config.pcl_data_type),
-                                LivoxLidarCallback::SetDataTypeCallback, lds_lidar);
+                                 LivoxLidarCallback::SetDataTypeCallback, lds_lidar);
         std::cout << "set pcl data type, handle: " << handle << ", data type: "
                   << static_cast<int32_t>(config.pcl_data_type) << std::endl;
       }
       if (config.pattern_mode != -1) {
         lidar_device->livox_config.set_bits |= kConfigScanPattern;
         SetLivoxLidarScanPattern(handle, static_cast<LivoxLidarScanPattern>(config.pattern_mode),
-                              LivoxLidarCallback::SetPatternModeCallback, lds_lidar);
+                                 LivoxLidarCallback::SetPatternModeCallback, lds_lidar);
         std::cout << "set scan pattern, handle: " << handle << ", scan pattern: "
                   << static_cast<int32_t>(config.pattern_mode) << std::endl;
       }
       if (config.blind_spot_set != -1) {
         lidar_device->livox_config.set_bits |= kConfigBlindSpot;
         SetLivoxLidarBlindSpot(handle, config.blind_spot_set,
-                              LivoxLidarCallback::SetBlindSpotCallback, lds_lidar);
+                               LivoxLidarCallback::SetBlindSpotCallback, lds_lidar);
 
         std::cout << "set blind spot, handle: " << handle << ", blind spot distance: "
                   << config.blind_spot_set << std::endl;

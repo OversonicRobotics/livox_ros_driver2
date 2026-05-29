@@ -128,8 +128,8 @@ livox_status QueryLivoxLidarFirmwareVer(uint32_t handle, QueryLivoxLidarInternal
 /**
  * Set LiDAR pcl data type.
  * @param  handle                 device handle.
- * @param  data_type              the type to change, the val:kLivoxLidarCartesianCoordinateHighData, 
- *                                                            kLivoxLidarCartesianCoordinateLowData, 
+ * @param  data_type              the type to change, the val:kLivoxLidarCartesianCoordinateHighData,
+ *                                                            kLivoxLidarCartesianCoordinateLowData,
  *                                                            kLivoxLidarSphericalCoordinateData
  * @param  cb                     callback for the command.
  * @param  client_data            user data associated with the command.
@@ -140,7 +140,7 @@ livox_status SetLivoxLidarPclDataType(uint32_t handle, LivoxLidarPointDataType d
 /**
  * Set LiDAR sacn pattern.
  * @param  handle                 device handle.
- * @param  scan_type              the type to change, the val:kLivoxLidarScanPatternRepetive, 
+ * @param  scan_type              the type to change, the val:kLivoxLidarScanPatternRepetive,
  *                                                            kLivoxLidarScanPatternNoneRepetive
  * @param  cb                     callback for the command.
  * @param  client_data            user data associated with the command.
@@ -351,7 +351,7 @@ livox_status StopForcedHeating(uint32_t handle, LivoxLidarAsyncControlCallback c
 /**
  * Disable LiDAR force heat function.
  * @param  handle                 device handle.
- * @param  pps_sync_mode          pps sync mode 
+ * @param  pps_sync_mode          pps sync mode
  * @param  cb                     callback for the command.
  * @param  client_data            user data associated with the command.
  * @return kStatusSuccess on successful return, see \ref LivoxStatus for other error code.
@@ -361,7 +361,7 @@ livox_status SetLivoxLidarPpsSyncMode(uint32_t handle, LivoxLidarPpsSyncMode pps
 /**
  * Disable LiDAR force heat function.
  * @param  handle                 device handle.
- * @param  esc_mode               lidar esc mode 
+ * @param  esc_mode               lidar esc mode
  * @param  cb                     callback for the command.
  * @param  client_data            user data associated with the command.
  * @return kStatusSuccess on successful return, see \ref LivoxStatus for other error code.
