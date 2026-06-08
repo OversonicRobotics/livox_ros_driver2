@@ -105,7 +105,7 @@ void Lddc::DistributePointCloudData(void) {
   } else if (kLivoxCustomMsg == transfer_format_ && !custom_buffer.empty()) {
     CustomMsg merged_msg = MergeMessages(custom_buffer);
     if (!merged_custom_pub_) {
-      std::string topic_name("livox/merged_custom_cloud");
+      std::string topic_name("livox/merged_cloud_custom_msg");
       uint32_t queue_size = 256;
 
       auto base_pub = CreatePublisher(transfer_format_, topic_name, queue_size);
