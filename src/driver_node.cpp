@@ -50,8 +50,3 @@ DriverNode::~DriverNode() {
 }
 
 } // namespace livox_ros
-
-
-
-
-
