@@ -24,6 +24,7 @@
 
 #include "driver_node.h"
 #include "lddc.h"
+#include "comm/pub_handler.h"
 
 namespace livox_ros {
 
@@ -32,10 +33,20 @@ DriverNode& DriverNode::GetNode() noexcept {
 }
 
 DriverNode::~DriverNode() {
-  lddc_ptr_->lds_->RequestExit();
-  exit_signal_.set_value();
-  pointclouddata_poll_thread_->join();
-  imudata_poll_thread_->join();
+  if (pointclouddata_poll_thread_ || imudata_poll_thread_) {
+    exit_signal_.set_value();
+  }
+
+  if (lddc_ptr_ && lddc_ptr_->lds_) {
+    lddc_ptr_->lds_->RequestExit();
+  }
+
+  pub_handler().Uninit();
+
+  if (pointclouddata_poll_thread_) pointclouddata_poll_thread_->join();
+  if (imudata_poll_thread_) imudata_poll_thread_->join();
+
+  std::exit(0);
 }
 
 } // namespace livox_ros
