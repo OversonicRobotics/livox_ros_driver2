@@ -50,7 +50,7 @@ Lds::Lds(const double publish_freq, const uint8_t data_src)
 Lds::~Lds() {
   lidar_count_ = 0;
   ResetLds(0);
-  std::cout << "lddc destroyed" << std::endl;
+  std::cout << "Lds destroyed" << std::endl;
 }
 
 void Lds::ResetLidar(LidarDevice *lidar, uint8_t data_src) {
