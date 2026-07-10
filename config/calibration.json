@@ -46,12 +46,14 @@
     {
       "ip" : "10.1.8.40",
       "pcl_data_type" : 1,
-      "pattern_mode" : 0
+      "pattern_mode" : 0,
+      "frame_id" : "calibration_frame"
     },
     {
       "ip" : "10.1.8.41",
       "pcl_data_type" : 1,
-      "pattern_mode" : 0
+      "pattern_mode" : 0,
+      "frame_id" : "calibration_frame"
     }
   ]
 }

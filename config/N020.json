@@ -47,6 +47,7 @@
       "ip" : "10.1.8.40",
       "pcl_data_type" : 1,
       "pattern_mode" : 0,
+      "frame_id" : "laser_frame_F3D",
       "extrinsic_parameter" : {
         "roll": 0.0,
         "pitch": 0.0,
@@ -60,6 +61,7 @@
       "ip" : "10.1.8.41",
       "pcl_data_type" : 1,
       "pattern_mode" : 0,
+      "frame_id" : "laser_frame_F3D",
       "extrinsic_parameter" : {
         "roll": 162.256,
         "pitch": 86.333,

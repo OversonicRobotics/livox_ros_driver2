@@ -102,6 +102,9 @@ bool LivoxLidarConfigParser::ParseUserConfigs(const rapidjson::Document &doc,
                   << IpNumToString(user_config.handle) << std::endl;
       }
     }
+    if (config.HasMember("frame_id") && config["frame_id"].IsString()) {
+      user_config.frame_id = config["frame_id"].GetString();
+    }
     user_config.set_bits = 0;
     user_config.get_bits = 0;
 
