@@ -60,6 +60,7 @@ void PubHandler::Uninit() {
 
 void PubHandler::RequestExit() {
   is_quit_.store(true);
+  packet_condition_.notify_all();
 }
 
 void PubHandler::SetPointCloudConfig(const double publish_freq) {

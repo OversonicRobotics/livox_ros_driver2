@@ -7,7 +7,6 @@ xfer_format   = 0    # 0-Pointcloud2(PointXYZRTL), 1-customized pointcloud forma
 data_src      = 0    # 0-lidar, others-Invalid data src
 publish_freq  = 10.0 # freqency of publish, 5.0, 10.0, 20.0, 50.0, etc.
 output_type   = 0
-frame_id      = 'calibration_frame'
 merge_pointcloud = False
 
 cur_path = os.path.split(os.path.realpath(__file__))[0] + '/'
@@ -21,7 +20,6 @@ livox_ros2_params = [
     {"data_src": data_src},
     {"publish_freq": publish_freq},
     {"output_data_type": output_type},
-    {"frame_id": frame_id},
     {"user_config_path": user_config_path},
     {"merge_pointcloud": merge_pointcloud}
 ]

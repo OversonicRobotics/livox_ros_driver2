@@ -64,10 +64,11 @@ class DriverNode;
 class Lddc final {
  public:
   Lddc(int format, int multi_topic, int data_src, int output_type, double frq,
-      std::string &frame_id, bool merge_pointcloud);
+      bool merge_pointcloud);
   ~Lddc();
 
   int RegisterLds(Lds *lds);
+  bool ValidateFrameIds(void);
   void DistributePointCloudData(void);
   void DistributeImuData(void);
   void PrepareExit(void);
@@ -92,8 +93,9 @@ class Lddc final {
 
   void PublishImuData(LidarImuDataQueue& imu_data_queue, const uint8_t index);
 
-  void InitPointcloud2MsgHeader(PointCloud2& cloud);
-  void InitPointcloud2Msg(const StoragePacket& pkg, PointCloud2& cloud, uint64_t& timestamp);
+  std::string GetFrameId(uint8_t index) const;
+  void InitPointcloud2MsgHeader(PointCloud2& cloud, uint8_t index);
+  void InitPointcloud2Msg(const StoragePacket& pkg, PointCloud2& cloud, uint64_t& timestamp, uint8_t index);
   void PublishPointcloud2Data(const uint8_t index, uint64_t timestamp, const PointCloud2& cloud);
 
   void InitCustomMsg(CustomMsg& livox_msg, const StoragePacket& pkg, uint8_t index);
@@ -127,7 +129,6 @@ class Lddc final {
   uint8_t output_type_;
   double publish_frq_;
   uint32_t publish_period_ns_;
-  std::string frame_id_;
   bool merge_pointcloud_;
 
   PublisherPtr private_pub_[kMaxSourceLidar];
